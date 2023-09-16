@@ -9,56 +9,39 @@
 
 void exec_command(char **cmd, int *errors, int *exit_status)
 {
-	pid_t child_pid = 0;
-	int child_status = 0;
+	pid_t child_pid;
+	int child_status;
 
-	child_pid = fork(); /* Create a child process */
-
+	child_pid = fork();
 	if (child_pid == -1)
 	{
 		perror("fork");
-		(*errors)++;
-		*exit_status = 1; /* Set an appropriate exit status for fork error */
-		return; /* Return to avoid executing the rest of the function */
+		return;
 	}
 
 	if (child_pid == 0)
 	{
-		/* This code runs in the child process */
-
-		/* Execute the command using execve */
-		if (execve(cmd[0], cmd, NULL) == -1)
+		if (execve(cmd[0], cmd, environ) == -1)
 		{
-			perror("execve");
 			(*errors)++;
-			*exit_status = 1; /* Set an appropriate exit status for execve failure */
-			exit(1); /* Exit the child process on execve failure */
+			perror("Failed Execve");
 		}
+		free_command(cmd);
 	}
 	else
 	{
-		/* This code runs in the parent process */
-
-		/* Wait for the child process to complete */
-		if (waitpid(child_pid, &child_status, 0) == -1)
+		wait(&child_status);
+		if (WIFEXITED(child_pid))
 		{
-			perror("waitpid");
+			*exit_status = WEXITSTATUS(child_status);
+		}
+		else if (WIFSIGNALED(child_status))
+		{
+			fprintf( stderr, "siganl terminated child process: %d\n", WTERMSIG(child_status));
+			*exit_status = WTERMSIG(child_status);
 			(*errors)++;
-			*exit_status = 1; /* Set an appropriate exit status for waitpid error */
 		}
-		else
-		{
-			/* Check if the child process exited normally */
-			if (WIFEXITED(child_status))
-			{
-				*exit_status = WEXITSTATUS(child_status);
-			}
-			else if (WIFSIGNALED(child_status))
-			{
-				perror("Child process terminated by signal");
-				(*errors)++;
-				*exit_status = 1; /* Set an appropriate exit status for signal termination */
-			}
-		}
+
+		free_command(cmd);
 	}
 }
