@@ -13,38 +13,41 @@ int main(int ac, char **av)
 	int exit_status = 0;
 	int errors = 0;
 	int is_executable_flag;
-	char **command = NULL;
+	char **cmd = NULL;
 	ac = ac;
 
 	while (main_loop)
 	{
-		command = fetch_command(&main_loop);
-		if (command != NULL)
+		cmd = fetch_command(&main_loop);
+		if (cmd != NULL)
 		{
-			if (strcmp(command[0], "exit") == 0)
+			if (strcmp(cmd[0], "exit") == 0)
 			{
-				free_command(command);
+				free_command(cmd);
 				break;
 			}
-			if (strcmp(command[0], "env") == 0)
+			if (strcmp(cmd[0], "env") == 0)
 			{
 				print_environment();
 				exit_status = 0;
-				free_command(command);
+				free_command(cmd);
 				continue;
 			}
-			is_executable_flag = is_executable(&command[0]);
+			is_executable_flag = is_executable(&cmd[0]);
 			if (is_executable_flag == 0)
 			{
-				errors++;
-				fprintf(stderr, "%s: %d: %s: COMMAND NOT FOUND\n", av[0], errors, command[0]);
+				(errors)++;
+				fprintf(stderr, "%s: %d: %s: COMMAND NOT FOUND\n", av[0], errors, cmd[0]);
 				exit_status = 127;
-				free_command(command);
-				find_path(&command[0]);
-				exec_command(command, &errors, &exit_status);
+				free_command(cmd);
+				continue;
+			}
+			else if (is_executable_flag == 1)
+				findExecutablePath(&cmd[0]);
+
+			exec_command(cmd, &errors, &exit_status);
 			}
 		}
-	}
 
 	return (exit_status);
-} 
+}

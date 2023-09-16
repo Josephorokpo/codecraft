@@ -4,44 +4,44 @@
  * find_path - Search for the command in directories listed in the PATH variable
  * @cmd: The command to find
  */
-void find_path(char **cmd)
+void findExecutablePath(char **cmdname)
 {
 	char *path = getenv("PATH");
-	char *full_path = NULL;
-	char *command = cmd[0];
-	char *token = NULL;
-
-	if (path == NULL)
-	{
-		/* PATH variable is not set, or an error occurred while accessing it */
+	if (path == NULL) {
+		fprintf(stderr, "Error: PATH environment variable not found.\n");
 		return;
 	}
 
-	token = strtok(path, ":");
+	char *path_copy = strdup(path);
+	if (path_copy == NULL) {
+		perror("Error: Memory allocation failed");
+		return;
+	}
+
+	char *token = strtok(path_copy, ":");
+	char *trypath = NULL;
+
 	while (token != NULL)
 	{
-		/* +2 for '/' and null terminator */
-		full_path = malloc(strlen(token) + strlen(command) + 2); 
-		if (full_path == NULL)
-		{
-			perror("malloc");
+		trypath = malloc(strlen(*cmdname) + strlen(token) + 2);
+		if (trypath == NULL) {
+			perror("Error: Memory allocation failed");
+			free(path_copy);
 			return;
 		}
 
-		sprintf(full_path, "%s/%s", token, command);
+		sprintf(trypath, "%s/%s", token, *cmdname);
 
-		/* Check if the constructed path is executable */
-		if (access(full_path, X_OK) == 0)
-		{
-			/* Update the command with the full path */
-			free(cmd[0]);
-			cmd[0] = strdup(full_path);
-			free(full_path);
-			return;
+		if (access(trypath, X_OK) == 0) {
+			free(*cmdname);
+			*cmdname = strdup(trypath);
+			free(trypath);
+			break;
 		}
 
-		free(full_path);
-
+		free(trypath);
 		token = strtok(NULL, ":");
 	}
+
+	free(path_copy);
 }
