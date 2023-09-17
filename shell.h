@@ -21,6 +21,5 @@ void findExecutablePath(char **cmdname);
 void print_environment(void);
 void exec_command(char **cmd, int *errors, int *exit_status);
 char **tokenize_input(char **line);
-int cd_builtin(char *dir);
 
 #endif
