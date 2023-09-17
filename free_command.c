@@ -16,6 +16,6 @@ void free_command(char **cmd)
 			i++;
 		}
 		free(cmd);
-	 	cmd = NULL; /* Set the pointer to NULL after freeing */
+		cmd = NULL; /* Set the pointer to NULL after freeing */
 	}
 }

@@ -4,7 +4,7 @@
  * exec_command - Execute a command with enhanced error handling
  * @cmd: An array of strings representing the command and its arguments
  * @errors: A pointer to an integer to track the number of errors
- * @exit_status: A pointer to an integer to store the exit status of the command
+ * @exit_status: Pointer to an integer to store the exit status of the command
  */
 
 void exec_command(char **cmd, int *errors, int *exit_status)
@@ -37,7 +37,7 @@ void exec_command(char **cmd, int *errors, int *exit_status)
 		}
 		else if (WIFSIGNALED(child_status))
 		{
-			fprintf( stderr, "siganl terminated child process: %d\n", WTERMSIG(child_status));
+			fprintf(stderr, "signal terminated child process: %d\n", WTERMSIG(child_status));
 			*exit_status = WTERMSIG(child_status);
 			(*errors)++;
 		}

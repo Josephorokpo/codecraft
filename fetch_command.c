@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * * read_user_input - Reads and processes user input to obtain a command.
- * *
- * * @shell_control: Pointer to control the shell's operations (enable/disable)
- * *
- * * Return: An array of command tokens, or NULL if there's an issue.
- * */
+ * fetch_command - Reads and processes user input to obtain a command.
+ * 
+ * @shell_control: Pointer to control the shell's operations (enable/disable)
+ * 
+ * Return: An array of command tokens, or NULL if there's an issue.
+ */
 char **fetch_command(int *shell_control)
 {
 	char **command = NULL;

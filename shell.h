@@ -11,7 +11,6 @@
 #include <errno.h>
 #include <ctype.h>
 
-
 /* Function prototypes */
 extern char **environ;
 char **fetch_command(int *main_loop);
@@ -22,6 +21,6 @@ void findExecutablePath(char **cmdname);
 void print_environment(void);
 void exec_command(char **cmd, int *errors, int *exit_status);
 char **tokenize_input(char **line);
+int cd_builtin(char *dir);
 
 #endif
-

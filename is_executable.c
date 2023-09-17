@@ -1,14 +1,15 @@
 #include "shell.h"
 
 /**
- * is_executable - Check if a command is executable in the PATH or has a full pathname.
+ * is_executable - Check if a command is executable in the PATH
+ * or has a full pathname.
  * @cmd: The command to check
  *
  * Return values:
- *  - NULL: Memory allocation failure.
- *  - 2: Full executable pathname.
- *  - 1: Executable in PATH.
- *  - 0: Not executable or not in PATH.
+ *   - NULL: Memory allocation failure.
+ *   - 2: Full executable pathname.
+ *   - 1: Executable in PATH.
+ *   - 0: Not executable or not in PATH.
  */
 int is_executable(char **cmd)
 {
