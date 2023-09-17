@@ -20,6 +20,6 @@ int is_executable(char **cmd);
 void findExecutablePath(char **cmdname);
 void print_environment(void);
 void exec_command(char **cmd, int *errors, int *exit_status);
-char **tokenize_input(char **line);
+char **tokenize_input(char **input_str);
 
 #endif

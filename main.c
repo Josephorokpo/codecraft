@@ -36,8 +36,7 @@ int main(int ac, char **av)
                     exit_status = atoi(cmd[1]);
                 }
                 free_command(cmd);
-		printf("%d\n", exit_status);
-                break;
+                exit(exit_status);
             }
             if (strcmp(cmd[0], "env") == 0)
             {

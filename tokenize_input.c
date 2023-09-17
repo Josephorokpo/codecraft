@@ -36,5 +36,5 @@ char **tokenize_input(char **input_str)
 	free(*input_str);
 	free(input_copy);
 
-	return (tokens);
+	return tokens;
 }

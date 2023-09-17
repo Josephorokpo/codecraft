@@ -3,8 +3,8 @@
 
 /**
  * strip_input - Removes leading and trailing whitespaces,
- * and reduces multiple spaces between tokens
- * to a single space.
+ *               and reduces multiple spaces between tokens
+ *               to a single space.
  *
  * @input: Pointer to the string to be stripped
  */
@@ -25,7 +25,7 @@ void strip_input(char *input)
 	while (end > start && isspace(input[end]))
 		end--;
 
-	for (i = start, j = start; i <= end; i++)
+	for (i = start, j = 0; i <= end; i++)
 	{
 		if (isspace(input[i]))
 		{
@@ -43,11 +43,4 @@ void strip_input(char *input)
 	}
 
 	input[j] = '\0';
-
-	if (start > 0)
-	{
-		for (i = 0; i <= end - start; i++)
-			input[i] = input[start + i];
-		input[i] = '\0';
-	}
 }
